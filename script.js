@@ -60,7 +60,7 @@ function playRound(humanChoice, computerChoice) {
 
 }
 function playGame() {
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 5; i++) {
 
         alert(`game #${i + 1}`);
 
@@ -68,15 +68,15 @@ function playGame() {
         const computerSelection = getComputerChoice();
 
         playRound(humanSelection, computerSelection);
-
-        console.log(`Human Selection :${humanSelection}`);
-        console.log(`Computer Selection :${computerSelection}`);
     }
 
     if (humanScore > computerScore) {
         console.log("You Aced Chmapion!!!");
+        alert("You Aced Chmapion!!!");
     } else {
         console.log("ish! Simple game you cannot play wooooo!!!");
+        alert("ish! Simple game you cannot play wooooo!!!");
+
     }
 }
 
