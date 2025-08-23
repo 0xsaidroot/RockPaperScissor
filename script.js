@@ -1,4 +1,10 @@
 let humanScore = 0, computerScore = 0;
+let  round=0;
+
+const text = document.querySelector('#text');
+const buttons = document.querySelector('#buttons');
+
+text.innerText= 'Select a Button!!!' ;
 
 function getComputerChoice() {
     let computerChoice = Math.floor(Math.random() * 3);
@@ -11,73 +17,72 @@ function getComputerChoice() {
         default:
             return 'Scissor';
     }
-}
-function getHumanChoice() {
-    let humanChoice = prompt("You are expected to write your choice Rock ,Paper or Scissor for the Game? let's GO", '').toLowerCase();
 
-    switch (humanChoice) {
-        case "rock":
-            return 'Rock';
-        case "paper":
-            return 'Paper';
-        case "scissor":
-            return 'Scissor';
-        default:
-            alert('Syntax Error Reload the page');
-            break;
-    }
 }
 function playRound(humanChoice, computerChoice) {
-
     if (humanChoice === "Rock" && computerChoice === "Scissor") {
         humanScore++;
-        alert("You win! Rock beats Scissor");
+        text.innerText = "You win! Rock beats computer Choice: Scissor";
         console.log("You win! Rock beats Scissor");
     } else if (humanChoice == "Paper" && computerChoice == "Rock") {
         humanScore++;
-        alert("You win! Paper beats Rock");
+        text.innerText = "You win! Paper beats computer Choice: Rock";
         console.log("You win! Paper beats Rock");
     } else if (humanChoice == "Scissor" && computerChoice == "Paper") {
         humanScore++;
-        alert("You win! Scissor beats Paper ");
+        text.innerText = "You win! Scissor beats computer Choice: Paper ";
         console.log("You win! Scissor beats Paper ");
     } else if (humanChoice == "Scissor" && computerChoice == "Rock") {
         computerScore++;
-        console.log("You lose! Rock beats Scissor ");
-        alert("You lose! Rock beats Scissor ");
+        text.innerText = "You lose! Rock beats Scissor ";
+        console.log("You lose! computer Choice: Rock beats Scissor ");
     } else if (humanChoice == "Rock" && computerChoice == "Paper") {
         computerScore++;
-        console.log("You lose! Paper beats Rock ");
-        alert("You lose! Paper beats Rock ");
+        text.innerText = "You lose! Paper beats Rock ";
+        console.log("You lose! computer Choice: Paper beats Rock ");
     } else if (humanChoice == "Paper" && computerChoice == "Scissor") {
         computerScore++;
-        console.log("You lose! Scissor beats Paper");
-        alert("You lose! Scissor beats Paper");
+        text.innerText = "You lose! Scissor beats Paper";
+        console.log("You lose! computer Choice: Scissor beats Paper");
     } else {
+        text.innerText = "We have a draw play Again!!!"
         console.log('We have a draw play Again!!!');
-        alert('We have a draw play Again!!!');
     }
 
 }
-function playGame() {
-    for (let i = 0; i < 5; i++) {
 
-        alert(`game #${i + 1}`);
-
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-
-        playRound(humanSelection, computerSelection);
+buttons.addEventListener('click',function(event){
+    if(round>=5){
+        text.innerText = "Game Over. Please refresh to play again";
+        return;
     }
 
+    let humanSelection='';
+    let target = event.target.id;
+
+    switch(target){
+        case 'rock' : humanSelection='Rock'; break;
+        case 'paper' : humanSelection='Paper'; break;
+        case 'scissor': humanSelection='Scissor'; break;
+        default :return;
+    }
+
+    const computerSelection = getComputerChoice();
+
+    playRound(humanSelection,computerSelection);
+
+    round++;
+    
+    if(round === 5){
     if (humanScore > computerScore) {
-        console.log("You Aced Chmapion!!!");
-        alert("You Aced Chmapion!!!");
+      text.innerText = `You won the game! Final: You ${humanScore} - CPU ${computerScore}`;
+    } else if (computerScore > humanScore) {
+      text.innerText = `You lost the game! Final: You ${humanScore} - CPU ${computerScore}`;
     } else {
-        console.log("ish! Simple game you cannot play wooooo!!!");
-        alert("ish! Simple game you cannot play wooooo!!!");
-
+      text.innerText = `It's a tie! Final: You ${humanScore} - CPU ${computerScore}`;
     }
-}
+  }
 
-playGame();
+})
+
+
