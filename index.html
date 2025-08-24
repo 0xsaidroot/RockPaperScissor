@@ -1,21 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rock/Paper/Scissors</title>
+    <script src="script.js" defer></script>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #DDD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #box{
+            background-color: #FFF;
+            color: #555;
+            height: 400px;
+            width: 500px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            border-radius: 15px;
+        }
+        #box .text{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 18px;
+        }
+        #buttonBox{
+            display: flex;
+            justify-content: space-around;
+        }
+        button{
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="game">
-    <p id="text"></p>
-    <div id="buttons">
-    <button id="rock">Rock</button>
-    <button id="paper">Paper</button>
-    <button id="scissor">Scissor</button>
+    <div id="box">
+        <h1>Rock/Paper/Scissor !</h1>
+        <div class="text">
+            <p id="textOne"></p>
+            <p id="textTwo"></p>
+        </div>
+        <div id="buttonBox">
+            <button id="rock">Rock 🪨</button>
+            <button id="paper">Paper 📄</button>
+            <button id="scissor">Scissor ✂️</button>
+        </div>
+        <button id="reset">Reset Game!</button>
     </div>
-    </div>
-    <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,88 +1,89 @@
-let humanScore = 0, computerScore = 0;
-let  round=0;
 
-const text = document.querySelector('#text');
-const buttons = document.querySelector('#buttons');
+const MAX_ROUND = 5;
 
-text.innerText= 'Select a Button!!!' ;
+let humanSelection = '';
+let round = 0, computerScore = 0, humanScore = 0;
 
-function getComputerChoice() {
-    let computerChoice = Math.floor(Math.random() * 3);
+const resetBtn = document.querySelector('#reset');
+const box = document.querySelector('#buttonBox');
+let textOne = document.querySelector('#textOne');
+let textTwo = document.querySelector('#textTwo');
 
-    switch (computerChoice) {
-        case 0:
-            return 'Rock';
-        case 1:
-            return 'Paper';
-        default:
-            return 'Scissor';
+
+function getCompterChoice() {
+    let random = Math.floor(Math.random() * 3);
+
+    switch (random) {
+        case 0: return 'rock';
+        case 1: return 'paper';
+        case 2: return 'scissor';
+        default: return;
     }
-
 }
-function playRound(humanChoice, computerChoice) {
-    if (humanChoice === "Rock" && computerChoice === "Scissor") {
+function getIcon(icon) {
+    let arr = ["🪨", "📄", "✂️"];
+    switch (icon) {
+        case 'rock': return arr.at(0);
+        case 'paper': return arr.at(1);
+        case 'scissor': return arr.at(2);
+    }
+}
+function playRound(human, computer) {
+    if ((human === 'rock' && computer === 'scissor') || (human === 'scissor' && computer === 'paper') || (human === 'paper' && computer === 'rock')) {
+        textOne.innerText = `You : ${human.toUpperCase()}${getIcon(human)} vs CPU : ${computer.toUpperCase()}${getIcon(computer)} --- You Win `;
         humanScore++;
-        text.innerText = "You win! Rock beats computer Choice: Scissor";
-        console.log("You win! Rock beats Scissor");
-    } else if (humanChoice == "Paper" && computerChoice == "Rock") {
-        humanScore++;
-        text.innerText = "You win! Paper beats computer Choice: Rock";
-        console.log("You win! Paper beats Rock");
-    } else if (humanChoice == "Scissor" && computerChoice == "Paper") {
-        humanScore++;
-        text.innerText = "You win! Scissor beats computer Choice: Paper ";
-        console.log("You win! Scissor beats Paper ");
-    } else if (humanChoice == "Scissor" && computerChoice == "Rock") {
-        computerScore++;
-        text.innerText = "You lose! Rock beats Scissor ";
-        console.log("You lose! computer Choice: Rock beats Scissor ");
-    } else if (humanChoice == "Rock" && computerChoice == "Paper") {
-        computerScore++;
-        text.innerText = "You lose! Paper beats Rock ";
-        console.log("You lose! computer Choice: Paper beats Rock ");
-    } else if (humanChoice == "Paper" && computerChoice == "Scissor") {
-        computerScore++;
-        text.innerText = "You lose! Scissor beats Paper";
-        console.log("You lose! computer Choice: Scissor beats Paper");
+        round++;
+    } else if (computer === human) {
+        textOne.innerText = `You : ${human.toUpperCase()}${getIcon(human)} vs CPU : ${computer.toUpperCase()}${getIcon(computer)} --- Draw `;
     } else {
-        text.innerText = "We have a draw play Again!!!"
-        console.log('We have a draw play Again!!!');
+        textOne.innerText = `You : ${human.toUpperCase()}${getIcon(human)} vs CPU : ${computer.toUpperCase()}${getIcon(computer)} --- You Lose `;
+        computerScore++;
+        round++;
     }
 
 }
+function playGame(human, computer) {
+    playRound(human, computer);
+    textTwo.innerText = `Score  : You : ${humanScore} --- CPU : ${computerScore}\n\nRemaining Rounds : ${MAX_ROUND - round}`;
 
-buttons.addEventListener('click',function(event){
-    if(round>=5){
-        text.innerText = "Game Over. Please refresh to play again";
-        return;
+    if (round === MAX_ROUND) {
+        textOne.innerText = `${(humanScore > computerScore) ? "You Win Thats Awesome Champion!" : "Ish Simple Game you Cannot Play!"}`;
+        document.querySelectorAll('#buttonBox button').forEach((btn) => {
+            btn.disabled = true;
+        })
     }
 
-    let humanSelection='';
+}
+function resetGame() {
+    round = 0;
+    computerScore = 0;
+    humanScore = 0;
+    document.querySelectorAll('#buttonBox button').forEach((btn) => {
+        btn.disabled = false;
+
+        textOne.innerText = "Game Reset! Choose Rock, Paper, or Scissor.";
+        textTwo.innerText = `You : 0 --- CPU : 0\nRemaining Rounds : ${MAX_ROUND}`;
+
+        document.querySelector('#rock').focus();
+    })
+}
+
+textOne.innerText = 'Get Ready to Play!';
+
+box.addEventListener('click', (event) => {
+
     let target = event.target.id;
 
-    switch(target){
-        case 'rock' : humanSelection='Rock'; break;
-        case 'paper' : humanSelection='Paper'; break;
-        case 'scissor': humanSelection='Scissor'; break;
-        default :return;
-    }
+    if (target === "rock") humanSelection = 'rock';
+    else if (target === "paper") humanSelection = 'paper';
+    else if (target === "scissor") humanSelection = 'scissor';
+    else return;
 
-    const computerSelection = getComputerChoice();
+    const computerSelection = getCompterChoice();
 
-    playRound(humanSelection,computerSelection);
+    console.log({ computerSelection });
+    console.log({ humanSelection });
 
-    round++;
-    
-    if(round === 5){
-    if (humanScore > computerScore) {
-      text.innerText = `You won the game! Final: You ${humanScore} - CPU ${computerScore}`;
-    } else if (computerScore > humanScore) {
-      text.innerText = `You lost the game! Final: You ${humanScore} - CPU ${computerScore}`;
-    } else {
-      text.innerText = `It's a tie! Final: You ${humanScore} - CPU ${computerScore}`;
-    }
-  }
-
+    playGame(humanSelection, computerSelection);
 })
-
-
+resetBtn.addEventListener('click', resetGame);
